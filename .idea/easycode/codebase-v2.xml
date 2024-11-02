@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.obiscr.chatgpt.settings.EasyCodeState">
+    <option name="projectFiles" value="$PROJECT_DIR$/src/main/java/com/joboffer/consumer/ws/emailnotification/JobofferConsumerApplication.java;/home/djarallah/work/kafka-formations/jobOffer-consumer-ws/joboffer consumer/src/main/java/com/joboffer/consumer/ws/emailnotification/ServletInitializer.java;/home/djarallah/work/kafka-formations/jobOffer-consumer-ws/joboffer consumer/src/test/java/com/joboffer/consumer/ws/emailnotification/JobofferConsumerApplicationTests.java;/home/djarallah/work/kafka-formations/jobOffer-consumer-ws/joboffer consumer/pom.xml" />
+  </component>
+</project>
