@@ -13,7 +13,11 @@ name: Java CI with Maven
 #    branches: [ "main" ]
 #  pull_request:
 #    branches: [ "main" ]
-
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "main" ]
 jobs:
   build:
     runs-on: ubuntu-latest
