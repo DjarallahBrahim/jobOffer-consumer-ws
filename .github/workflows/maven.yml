@@ -49,6 +49,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Create .m2 directory
+        run: mkdir -p $HOME/.m2
       - name: Configure Maven settings.xml
         env:
           MAVEN_SETTINGS: ${{ secrets.MAVEN_SETTINGS }}
