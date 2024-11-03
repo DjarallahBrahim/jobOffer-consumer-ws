@@ -18,6 +18,12 @@
     <licenses>
         <license/>
     </licenses>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/DjarallahBrahim/jobOffer-consumer-ws</url>
+        </repository>
+    </distributionManagement>
     <developers>
         <developer/>
     </developers>
