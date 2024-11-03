@@ -49,11 +49,18 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Configure Maven settings.xml for deployment
+      - name: Configure Maven settings.xml
         env:
           MAVEN_SETTINGS: ${{ secrets.MAVEN_SETTINGS }}
         run: |
           echo "$MAVEN_SETTINGS" > $HOME/.m2/settings.xml
+
+      # Create settings-security.xml from the secret
+      - name: Configure Maven settings-security.xml
+        env:
+          MAVEN_SETTINGS_SECURITY: ${{ secrets.MAVEN_SETTINGS_SECURITY }}
+        run: |
+          echo "$MAVEN_SETTINGS_SECURITY" > $HOME/.m2/settings-security.xml
 
       - name: Deploy to GitHub Packages
         run: mvn deploy --settings $HOME/.m2/settings.xml
