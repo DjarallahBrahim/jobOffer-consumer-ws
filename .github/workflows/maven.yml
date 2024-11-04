@@ -73,15 +73,32 @@ jobs:
       - name: Deploy to GitHub Packages
         run: mvn deploy --settings $HOME/.m2/settings.xml
 
-#
-#    - name: Log in to Docker Hub
-#      uses: docker/login-action@v2
-#      with:
-#        username: ${{ secrets.DOCKERHUB_USERNAME }}
-#        password: ${{ secrets.DOCKERHUB_PASSWORD }}
-#
-#    - name: Build Docker Image
-#      run: docker build -t djarallahbrahim/job-offer-producer-ws:latest -f docker/Dockerfile .
-#
-#    - name: Push Docker Image
-#      run: docker push djarallahbrahim/job-offer-producer-ws:latest
+      - name: Upload target as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: target
+          path: target/
+
+  build_docker:
+    runs-on: ubuntu-latest
+    needs: deploy_mvn
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download target artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: target
+          path: target
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build Docker Image
+        run: docker build -t djarallahbrahim/job-offer-consumer-ws:latest -f docker/Dockerfile .
+
+      - name: Push Docker Image
+        run: docker push djarallahbrahim/job-offer-consumer-ws:latest

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration debug="false" scan="true"
+               scanPeriod="60 seconds">
+    <statusListener
+            class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+
+    <property resource="application.properties"/>
+    <property name="LOG_VERSION" value="1.0"/>
+    <property name="LOG_MAX_HISTORY" value="7"/>
+    <property name="LOGS_FOLDER" value="${logback.logs_folder}" />
+    <property name="BACKUP_FOLDER" value="${logback.logs_folder}/archives" />
+    <property name="LOG_STDOUT_NAME" value="stdout" />
+    <property name="LOG_STDERR_NAME" value="stderr" />
+
+    <!-- +++++++++++++++ -->
+    <!-- Appenders files -->
+    <!-- +++++++++++++++ -->
+
+    <appender name="FILE_STDOUT"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS_FOLDER}/${LOG_STDOUT_NAME}.log</file>
+        <encoder>
+            <Pattern>%d{HH:mm:ss} %-5level %class{26}||%msg%n%rEx</Pattern>
+        </encoder>
+        <!-- Rotate every day for log collection and archiving -->
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${BACKUP_FOLDER}/${LOG_STDOUT_NAME}.%d{yyyy-MM-dd}.zip
+            </fileNamePattern>
+            <MaxHistory>${LOG_MAX_HISTORY}</MaxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="FILE_STDERR"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS_FOLDER}/${LOG_STDERR_NAME}.log</file>
+        <encoder>
+            <Pattern>%d{HH:mm:ss} %-5level %class{26}||%msg%n%rEx</Pattern>
+        </encoder>
+        <!-- Rotate every day for log collection and archiving -->
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${BACKUP_FOLDER}/${LOG_STDERR_NAME}.%d{yyyy-MM-dd}.zip
+            </fileNamePattern>
+            <MaxHistory>${LOG_MAX_HISTORY}</MaxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- +++++++++++++++ -->
+    <!-- Appenders Console -->
+    <!-- +++++++++++++++ -->
+
+    <appender name="CONSOLE-ACTIVITY"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <encoder
+                class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp />
+                <pattern>
+                    <pattern>
+                        {
+                        "level": "%level",
+                        "logger": "%logger",
+                        "type": "ACTIVITY",
+                        "message": "%message %ex"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+
+    <appender name="CONSOLE-JVM"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <encoder
+                class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp />
+                <pattern>
+                    <pattern>
+                        {
+                        "level": "%level",
+                        "logger": "%logger",
+                        "type": "JVM",
+                        "message": "%message %ex"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+
+
+
+    <!-- +++++++++++++++++++++++++++++ -->
+    <!-- Internal loggers (Java )      -->
+    <!-- +++++++++++++++++++++++++++++ -->
+    <logger name="com.joboffer.consumer.ws.emailnotification" additivity="false">
+        <level value="${LOG_LEVEL}" />
+        <if condition="isDefined(&quot;LOG_FILE_ACTIVATED&quot;) &amp;&amp; !isNull(&quot;LOG_FILE_ACTIVATED&quot;) &amp;&amp; !property(&quot;LOG_FILE_ACTIVATED&quot;).contains(&quot;false&quot;)">
+            <then>
+                <appender-ref ref="FILE_STDOUT" />
+            </then>
+        </if>
+        <appender-ref ref="CONSOLE-ACTIVITY" />
+    </logger>
+
+    <!-- ++++++++++ -->
+    <!-- Frameworks -->
+    <!-- ++++++++++ -->
+    <logger name="org.springframework" additivity="false" level="WARN">
+        <if condition="isDefined(&quot;LOG_FILE_ACTIVATED&quot;) &amp;&amp; !isNull(&quot;LOG_FILE_ACTIVATED&quot;) &amp;&amp; !property(&quot;LOG_FILE_ACTIVATED&quot;).contains(&quot;false&quot;)">
+            <then>
+                <appender-ref ref="FILE_STDOUT" />
+            </then>
+        </if>
+        <appender-ref ref="CONSOLE-ACTIVITY" />
+    </logger>
+
+    <!-- ++++ -->
+    <!-- ROOT -->
+    <!-- ++++ -->
+    <root level="WARN">
+        <if condition="isDefined(&quot;LOG_FILE_ACTIVATED&quot;) &amp;&amp; !isNull(&quot;LOG_FILE_ACTIVATED&quot;) &amp;&amp; !property(&quot;LOG_FILE_ACTIVATED&quot;).contains(&quot;false&quot;)">
+            <then>
+                <appender-ref ref="FILE_STDERR" />
+            </then>
+        </if>
+        <appender-ref ref="CONSOLE-JVM" />
+    </root>
+</configuration>
