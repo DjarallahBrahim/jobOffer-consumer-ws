@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.joboffer.consumer.ws</groupId>
-    <artifactId>consumer-emailNotification</artifactId>
+    <artifactId>joboffer-consumer-emailnotification</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>job offer consumer</name>
