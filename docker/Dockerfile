@@ -35,6 +35,7 @@ COPY --chown=9000:server target/joboffer-consumer-emailnotification.war /install
 
 
 EXPOSE 8080/tcp
+EXPOSE 8085/tcp
 EXPOSE 8443/tcp
 
 ENTRYPOINT ["/entrypoint.sh"]
