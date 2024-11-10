@@ -16,6 +16,6 @@ public class JobOfferCreatedEventHandler {
 
     @KafkaHandler
     public void handler(JobOfferCreatedEvent jobOfferCreatedEvent){
-        LOGGER.info("[JobOfferCreatedEventHandler] received a new event: {} ", jobOfferCreatedEvent.getTitle());
+        LOGGER.info("[JobOfferCreatedEventHandler] received a new event: {} ", jobOfferCreatedEvent.getName());
     }
 }
